@@ -6,15 +6,13 @@
 /*   By: tbezerra <tbezerra@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:53:54 by tbezerra          #+#    #+#             */
-/*   Updated: 2023/11/05 11:06:52 by tbezerra         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:15:02 by tbezerra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
-#include <stdlib.h>
 
-void	ft_putstr (char *str)
+void	ft_putstr(char *str)
 {
 	int	i;
 
@@ -26,7 +24,7 @@ void	ft_putstr (char *str)
 	}
 }
 
-int	ft_printstr (char *str)
+int	ft_printstr(char *str)
 {
 	int	i;
 
@@ -44,7 +42,7 @@ int	ft_printstr (char *str)
 	return (i);
 }
 
-int	ft_printnbr (int n)
+int	ft_printnbr(int n)
 {
 	int		len;
 	char	*num;
@@ -53,11 +51,33 @@ int	ft_printnbr (int n)
 	num = ft_itoa(n);
 	len = ft_printstr(num);
 	free(num);
-	return(len);
+	return (len);
 }
 
-int	ft_printpercent (void)
+int	ft_printpercent(void)
 {
-	write(1, '%', 1);
+	write(1, "%", 1);
 	return (1);
+}
+
+int	ft_putnbr_base(long num, char *base)
+{
+	int	len;
+	int	base_len;
+
+	len = 0;
+	base_len = ft_strlen(base);
+	if (num < 0)
+	{
+		write(1, "-", 1);
+		len++;
+		num = -num;
+	}
+	if (num >= base_len)
+	{
+		len += ft_putnbr_base(num / base_len, base);
+		num = num % base_len;
+	}
+	len += write(1, &base[num], 1);
+	return (len);
 }
